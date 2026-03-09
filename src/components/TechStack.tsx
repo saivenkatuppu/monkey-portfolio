@@ -135,20 +135,27 @@ const TechStack = () => {
         .getBoundingClientRect().top;
       setIsActive(scrollY > threshold);
     };
-    document.querySelectorAll(".header a").forEach((elem) => {
+    const handleClick = () => {
+      const interval = setInterval(() => {
+        handleScroll();
+      }, 10);
+      setTimeout(() => {
+        clearInterval(interval);
+      }, 1000);
+    };
+
+    const headerLinks = document.querySelectorAll(".header a");
+    headerLinks.forEach((elem) => {
       const element = elem as HTMLAnchorElement;
-      element.addEventListener("click", () => {
-        const interval = setInterval(() => {
-          handleScroll();
-        }, 10);
-        setTimeout(() => {
-          clearInterval(interval);
-        }, 1000);
-      });
+      element.addEventListener("click", handleClick);
     });
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      headerLinks.forEach((elem) => {
+        const element = elem as HTMLAnchorElement;
+        element.removeEventListener("click", handleClick);
+      });
     };
   }, []);
   const materials = useMemo(() => {
