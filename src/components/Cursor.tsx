@@ -15,13 +15,17 @@ const Cursor = () => {
     };
     document.addEventListener("mousemove", handleMouseMove);
 
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.1, ease: "power3" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.1, ease: "power3" });
+
     let reqId: number;
     const loop = () => {
       if (!hover) {
         const delay = 6;
         cursorPos.x += (mousePos.x - cursorPos.x) / delay;
         cursorPos.y += (mousePos.y - cursorPos.y) / delay;
-        gsap.to(cursor, { x: cursorPos.x, y: cursorPos.y, duration: 0.1 });
+        xTo(cursorPos.x);
+        yTo(cursorPos.y);
       }
       reqId = requestAnimationFrame(loop);
     };
