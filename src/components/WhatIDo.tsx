@@ -27,7 +27,7 @@ const WhatIDo = () => {
   return (
     <div className="whatIDO">
       <div className="what-box">
-        <h2 className="title">
+        <h2 className="title gradient-text">
           W<span className="hat-h2">HAT</span>
           <div>
             I<span className="do-h2"> DO</span>
@@ -87,7 +87,7 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>DEVELOP</h3>
+              <h3 className="gradient-text">DEVELOP</h3>
               <h4>Description</h4>
               <p>
                 I engineer full-stack web applications from the ground up — building robust REST APIs, dynamic frontends, and database-driven backends. From ecommerce platforms to enterprise portals, I write clean, scalable code that works in production.
@@ -127,7 +127,7 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>DEPLOY</h3>
+              <h3 className="gradient-text">DEPLOY</h3>
               <h4>Description</h4>
               <p>
                 I architect and deploy cloud infrastructure on AWS — configuring EC2, VPC, S3, Docker containers, and domain/SSL setups. I've deployed enterprise platforms like OrangeHRM, Seafile, Redmine, and full ecommerce systems into production-ready cloud environments.

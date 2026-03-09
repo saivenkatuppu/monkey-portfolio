@@ -79,8 +79,8 @@ const Work = () => {
   return (
     <div className="work-section" id="work">
       <div className="work-container section-container">
-        <h2>
-          My <span>Work</span>
+        <h2 className="gradient-text">
+          My Work
         </h2>
         <div className="work-flex">
           {projects.map((project, index) => (
