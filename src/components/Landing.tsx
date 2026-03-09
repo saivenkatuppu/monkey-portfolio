@@ -10,11 +10,11 @@ const Landing = ({ children }: PropsWithChildren) => {
             <h2>Hello! I'm</h2>
             <h1 className="floating-name">
               <div className="floating-word">
-                {"SAI".split("").map((c, i) => <span key={i} style={{ animationDelay: `${i * 0.1}s` }}>{c}</span>)}
+                {"SAIVENKAT".split("").map((c, i) => <span key={i} style={{ animationDelay: `${i * 0.1}s` }}>{c}</span>)}
               </div>
               <br />
               <div className="floating-word">
-                {"VENKAT".split("").map((c, i) => <span key={i} style={{ animationDelay: `${(i + 3) * 0.1}s` }}>{c}</span>)}
+                {"UPPU".split("").map((c, i) => <span key={i} style={{ animationDelay: `${(i + 9) * 0.1}s` }}>{c}</span>)}
               </div>
             </h1>
           </div>
@@ -22,10 +22,10 @@ const Landing = ({ children }: PropsWithChildren) => {
             <h3>A Full-Stack</h3>
             <h2 className="landing-info-h2">
               <div className="landing-h2-1">Engineer</div>
-              <div className="landing-h2-2">DevOps Developer</div>
+              <div className="landing-h2-2">DevOps</div>
             </h2>
             <h2>
-              <div className="landing-h2-info">DevOps Developer</div>
+              <div className="landing-h2-info">DevOps</div>
               <div className="landing-h2-info-1">Engineer</div>
             </h2>
           </div>
