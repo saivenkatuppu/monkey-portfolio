@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { useCanvasVisibility } from "../utils/useCanvasVisibility";
 import setCharacter from "./utils/character";
 import setLighting from "./utils/lighting";
 import { useLoading } from "../../context/LoadingProvider";
@@ -18,6 +19,9 @@ const Scene = () => {
   const hoverDivRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef(new THREE.Scene());
   const { setLoading } = useLoading();
+  const { ref: containerRef, isVisible } = useCanvasVisibility(0.01);
+  const isVisibleRef = useRef(isVisible);
+  isVisibleRef.current = isVisible;
 
   const [, setChar] = useState<THREE.Object3D | null>(null);
   useEffect(() => {
@@ -111,6 +115,10 @@ const Scene = () => {
       let reqId: number;
       const animate = () => {
         reqId = requestAnimationFrame(animate);
+
+        // PAUSE ENGINE: Do not calculate complex logic if character is off screen
+        if (!isVisibleRef.current) return;
+
         if (headBone) {
           handleHeadRotation(
             headBone,
@@ -154,7 +162,7 @@ const Scene = () => {
 
   return (
     <>
-      <div className="character-container">
+      <div className="character-container" ref={containerRef}>
         <div className="character-model" ref={canvasDiv}>
           <div className="character-rim"></div>
           <div className="character-hover" ref={hoverDivRef}></div>

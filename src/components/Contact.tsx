@@ -1,7 +1,42 @@
 import { MdArrowOutward, MdCopyright } from "react-icons/md";
 import "./styles/Contact.css";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
+  useGSAP(() => {
+    const elements = gsap.utils.toArray(".contact-box > *");
+    elements.forEach((el: any) => {
+      gsap.from(el, {
+        x: () => gsap.utils.random(-150, 150),
+        y: () => gsap.utils.random(-150, 150),
+        rotation: () => gsap.utils.random(-45, 45),
+        opacity: 0,
+        duration: 1.8,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".contact-container",
+          start: "top 75%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
+
+    gsap.from(".contact-container h3", {
+      y: -100,
+      opacity: 0,
+      duration: 1.5,
+      ease: "bounce.out",
+      scrollTrigger: {
+        trigger: ".contact-container",
+        start: "top 75%"
+      }
+    });
+  }, []);
+
   return (
     <div className="contact-section section-container" id="contact">
       <div className="contact-container">

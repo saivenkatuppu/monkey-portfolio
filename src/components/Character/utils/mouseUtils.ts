@@ -1,4 +1,10 @@
 import * as THREE from "three";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+
+const getScrollTop = () => {
+  const smoother = ScrollSmoother.get();
+  return smoother ? smoother.scrollTop() : window.scrollY;
+};
 
 export const handleMouseMove = (
   event: MouseEvent,
@@ -43,7 +49,8 @@ export const handleHeadRotation = (
   lerp: (x: number, y: number, t: number) => number
 ) => {
   if (!headBone) return;
-  if (window.scrollY < 200) {
+  const scrollY = getScrollTop();
+  if (scrollY < 200) {
     const maxRotation = Math.PI / 6;
     headBone.rotation.y = lerp(
       headBone.rotation.y,

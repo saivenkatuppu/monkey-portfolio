@@ -1,5 +1,7 @@
 import * as THREE from "three";
-import { useRef, useMemo, useState, useEffect } from "react";
+import React, { useRef, useMemo, useState, useEffect } from "react";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { useCanvasVisibility } from "./utils/useCanvasVisibility";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
@@ -36,6 +38,8 @@ type SphereProps = {
   r?: typeof THREE.MathUtils.randFloatSpread;
   material: THREE.MeshPhysicalMaterial;
   isActive: boolean;
+  pointerRef: React.MutableRefObject<THREE.Vector3>;
+  scrollVelocity: React.MutableRefObject<number>;
 };
 
 function SphereGeo({
@@ -44,22 +48,37 @@ function SphereGeo({
   r = THREE.MathUtils.randFloatSpread,
   material,
   isActive,
+  pointerRef,
+  scrollVelocity,
 }: SphereProps) {
   const api = useRef<RapierRigidBody | null>(null);
 
   useFrame((_state, delta) => {
     if (!isActive) return;
     delta = Math.min(0.1, delta);
-    const impulse = vec
-      .copy(api.current!.translation())
-      .normalize()
-      .multiply(
-        new THREE.Vector3(
-          -50 * delta * scale,
-          -150 * delta * scale,
-          -50 * delta * scale
-        )
-      );
+    const pos = api.current!.translation();
+    const vecPos = vec.copy(pos);
+
+    const center = new THREE.Vector3(0, 0, 0);
+    const toCenter = center.clone().sub(vecPos).normalize();
+    const up = new THREE.Vector3(0, 1, 0);
+    const tangent = new THREE.Vector3().crossVectors(up, toCenter).normalize();
+
+    // Repulsion from cursor (hover)
+    const distToCursor = vecPos.distanceTo(pointerRef.current);
+    const repulsion = new THREE.Vector3();
+    if (distToCursor < 15) {
+      repulsion.copy(vecPos).sub(pointerRef.current).normalize().multiplyScalar(400 * delta * scale);
+    }
+
+    // Scroll reversing gravity
+    const scrollEffect = new THREE.Vector3(0, scrollVelocity.current * delta * 20 * scale, 0);
+
+    const impulse = new THREE.Vector3()
+      .add(toCenter.multiplyScalar(100 * delta * scale))
+      .add(tangent.multiplyScalar(60 * delta * scale))
+      .add(repulsion)
+      .add(scrollEffect);
 
     api.current?.applyImpulse(impulse, true);
   });
@@ -94,9 +113,10 @@ function SphereGeo({
 type PointerProps = {
   vec?: THREE.Vector3;
   isActive: boolean;
+  pointerRef: React.MutableRefObject<THREE.Vector3>;
 };
 
-function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
+function Pointer({ vec = new THREE.Vector3(), isActive, pointerRef }: PointerProps) {
   const ref = useRef<RapierRigidBody>(null);
 
   useFrame(({ pointer, viewport }) => {
@@ -109,6 +129,7 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
       ),
       0.2
     );
+    pointerRef.current.copy(targetVec);
     ref.current?.setNextKinematicTranslation(targetVec);
   });
 
@@ -125,15 +146,31 @@ function Pointer({ vec = new THREE.Vector3(), isActive }: PointerProps) {
 }
 
 const TechStack = () => {
+  const { ref, isVisible } = useCanvasVisibility(0.1);
   const [isActive, setIsActive] = useState(false);
 
+  const pointerRef = useRef(new THREE.Vector3());
+  const scrollVelocity = useRef(0);
+
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let scrollTimeout: any;
+
     const handleScroll = () => {
-      const scrollY = window.scrollY || document.documentElement.scrollTop;
+      const smoother = ScrollSmoother.get();
+      const scrollY = smoother ? smoother.scrollTop() : window.scrollY;
       const threshold = document
         .getElementById("work")!
         .getBoundingClientRect().top;
       setIsActive(scrollY > threshold);
+
+      scrollVelocity.current = scrollY - lastScrollY;
+      lastScrollY = scrollY;
+
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        scrollVelocity.current = 0;
+      }, 50);
     };
     const handleClick = () => {
       const interval = setInterval(() => {
@@ -174,10 +211,11 @@ const TechStack = () => {
   }, []);
 
   return (
-    <div className="techstack">
+    <div className="techstack" ref={ref}>
       <h2> My Techstack</h2>
 
       <Canvas
+        frameloop={isVisible ? "always" : "demand"}
         shadows
         gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
@@ -194,14 +232,16 @@ const TechStack = () => {
           shadow-mapSize={[512, 512]}
         />
         <directionalLight position={[0, 5, -4]} intensity={2} />
-        <Physics gravity={[0, 0, 0]}>
-          <Pointer isActive={isActive} />
+        <Physics gravity={[0, 0, 0]} paused={!isVisible}>
+          <Pointer isActive={isActive && isVisible} pointerRef={pointerRef} />
           {spheres.map((props, i) => (
             <SphereGeo
               key={i}
               {...props}
               material={materials[Math.floor(Math.random() * materials.length)]}
-              isActive={isActive}
+              isActive={isActive && isVisible}
+              pointerRef={pointerRef}
+              scrollVelocity={scrollVelocity}
             />
           ))}
         </Physics>

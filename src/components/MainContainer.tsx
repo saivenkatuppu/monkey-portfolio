@@ -9,6 +9,11 @@ import SocialIcons from "./SocialIcons";
 import WhatIDo from "./WhatIDo";
 import Work from "./Work";
 import setSplitText from "./utils/splitText";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const TechStack = lazy(() => import("./TechStack"));
 
@@ -27,6 +32,23 @@ const MainContainer = ({ children }: PropsWithChildren) => {
     return () => {
       window.removeEventListener("resize", resizeHandler);
     };
+  }, []);
+
+  useGSAP(() => {
+    const sections = gsap.utils.toArray('.about-section, .whatIDO, .career-section, .work-section, .techstack, .contact-section');
+    sections.forEach((section: any) => {
+      gsap.from(section, {
+        y: 150,
+        opacity: 0,
+        duration: 1.2,
+        ease: "back.out(1.2)",
+        scrollTrigger: {
+          trigger: section,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    });
   }, []);
 
   return (
