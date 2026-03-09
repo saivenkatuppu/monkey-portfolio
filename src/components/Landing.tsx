@@ -9,13 +9,9 @@ const Landing = ({ children }: PropsWithChildren) => {
           <div className="landing-intro">
             <h2>Hello! I'm</h2>
             <h1 className="floating-name">
-              <div className="floating-word">
-                {"SAIVENKAT".split("").map((c, i) => <span key={i} style={{ animationDelay: `${i * 0.1}s` }}>{c}</span>)}
-              </div>
+              SAIVENKAT
               <br />
-              <div className="floating-word">
-                {"UPPU".split("").map((c, i) => <span key={i} style={{ animationDelay: `${(i + 9) * 0.1}s` }}>{c}</span>)}
-              </div>
+              <span>UPPU</span>
             </h1>
           </div>
           <div className="landing-info">

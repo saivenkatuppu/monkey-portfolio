@@ -30,6 +30,23 @@ export function initialFX() {
       y: 0,
       stagger: 0.025,
       delay: 0.3,
+      onComplete: () => {
+        // After appearing, make the H1 letters hover forever
+        const h1Chars = landingText.chars.filter((el: any) =>
+          el.closest('.landing-intro h1') !== null
+        );
+        gsap.to(h1Chars, {
+          y: -15,
+          duration: 3,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          stagger: {
+            each: 0.1,
+            from: "start"
+          }
+        });
+      }
     }
   );
 
