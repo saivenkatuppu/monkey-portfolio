@@ -90,21 +90,20 @@ const WhatIDo = () => {
               <h3>DEVELOP</h3>
               <h4>Description</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae.
+                I engineer full-stack web applications from the ground up — building robust REST APIs, dynamic frontends, and database-driven backends. From ecommerce platforms to enterprise portals, I write clean, scalable code that works in production.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
                 <div className="what-tags">JavaScript</div>
                 <div className="what-tags">TypeScript</div>
-                <div className="what-tags">Three.js</div>
                 <div className="what-tags">React</div>
-                <div className="what-tags">Css</div>
-                <div className="what-tags">Node.js</div>
                 <div className="what-tags">Next.js</div>
+                <div className="what-tags">Node.js</div>
                 <div className="what-tags">Express.js</div>
                 <div className="what-tags">PHP</div>
-                <div className="what-tags">MySql</div>
+                <div className="what-tags">MySQL</div>
+                <div className="what-tags">Three.js</div>
+                <div className="what-tags">CSS / Tailwind</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -128,22 +127,23 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>DESIGN</h3>
+              <h3>DEPLOY</h3>
               <h4>Description</h4>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas
-                quia aliquid laboriosam ducimus sit molestiae
+                I architect and deploy cloud infrastructure on AWS — configuring EC2, VPC, S3, Docker containers, and domain/SSL setups. I've deployed enterprise platforms like OrangeHRM, Seafile, Redmine, and full ecommerce systems into production-ready cloud environments.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Blender</div>
-                <div className="what-tags">Zbrush</div>
-                <div className="what-tags">UI Design</div>
-                <div className="what-tags">Motion</div>
-                <div className="what-tags">Rigging</div>
-                <div className="what-tags">3D Animation</div>
-                <div className="what-tags">Character Design</div>
-                <div className="what-tags">Modelling</div>
+                <div className="what-tags">AWS EC2</div>
+                <div className="what-tags">AWS S3</div>
+                <div className="what-tags">AWS VPC</div>
+                <div className="what-tags">Docker</div>
+                <div className="what-tags">Nginx</div>
+                <div className="what-tags">SSL / Domain</div>
+                <div className="what-tags">Linux</div>
+                <div className="what-tags">CI/CD</div>
+                <div className="what-tags">LLM Integration</div>
+                <div className="what-tags">Open-Source Platforms</div>
               </div>
               <div className="what-arrow"></div>
             </div>
